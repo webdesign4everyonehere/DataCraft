@@ -1,0 +1,283 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+@theme {
+  --font-family-sans: "Press Start 2P", system-ui, monospace;
+  --color-brand-primary: #e80000;
+  --color-brand-secondary: #f8d820;
+  --color-brand-tertiary: #00a800;
+  --color-bg-sky: #5c94fc;
+  --color-brick: #c84c0c;
+}
+
+/* ── MARIO THEME (default) ── */
+:root,
+[data-theme="mario"] {
+  --theme-bg: #5c94fc;
+  --theme-panel-header: #e80000;
+  --theme-btn-primary: #e80000;
+  --theme-btn-sort: #c84c0c;
+  --theme-node: #c84c0c;
+  --theme-accent: #f8d820;
+  --theme-green: #00a800;
+  --theme-panel-border: #ffffff;
+}
+
+/* ── ZELDA DUNGEON THEME ── */
+[data-theme="zelda"] {
+  --theme-bg: #1a1208;
+  --theme-panel-header: #2d5016;
+  --theme-btn-primary: #2d5016;
+  --theme-btn-sort: #7b5e1a;
+  --theme-node: #7b5e1a;
+  --theme-accent: #e8b84b;
+  --theme-green: #4caf50;
+  --theme-panel-border: #e8b84b;
+}
+
+/* ── SPACE INVADERS THEME ── */
+[data-theme="space"] {
+  --theme-bg: #000010;
+  --theme-panel-header: #220044;
+  --theme-btn-primary: #5500aa;
+  --theme-btn-sort: #003388;
+  --theme-node: #003388;
+  --theme-accent: #00ffff;
+  --theme-green: #00ff88;
+  --theme-panel-border: #00ffff;
+}
+
+/* ── POKEMON THEME ── */
+[data-theme="pokemon"] {
+  --theme-bg: #1a6b3a;
+  --theme-panel-header: #cc0000;
+  --theme-btn-primary: #cc0000;
+  --theme-btn-sort: #3b5bdb;
+  --theme-node: #3b5bdb;
+  --theme-accent: #ffde00;
+  --theme-green: #33cc33;
+  --theme-panel-border: #ffffff;
+}
+
+/* Apply theme vars to existing design tokens */
+body {
+  margin: 0;
+  background-color: var(--theme-bg, var(--color-bg-sky));
+  color: #ffffff;
+  font-family: var(--font-family-sans);
+  overflow: hidden;
+  user-select: none;
+  image-rendering: pixelated;
+  -webkit-font-smoothing: none;
+  transition: background-color 0.4s ease;
+}
+
+#root {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+}
+
+/* 8-bit pixel borders via box-shadow */
+.pixel-panel {
+  background: black;
+  border: 4px solid var(--theme-panel-border, white);
+  box-shadow: 8px 8px 0px 0px rgba(0,0,0,0.5);
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.3s ease;
+}
+
+/* Themed panel header */
+.panel-header-themed {
+  background-color: var(--theme-panel-header, #e80000);
+  transition: background-color 0.3s ease;
+}
+
+/* Custom Scrollbar for game feel */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+::-webkit-scrollbar-track {
+  background: black;
+  border-left: 2px solid var(--theme-panel-border, white);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--theme-btn-primary, var(--color-brand-primary));
+  border: 2px solid var(--theme-panel-border, white);
+}
+::-webkit-resizer {
+  background: var(--theme-accent, var(--color-brand-secondary));
+  border: 2px solid var(--theme-panel-border, white);
+}
+
+.btn-pixel {
+  position: relative;
+  border: 4px solid var(--theme-panel-border, white);
+  color: white;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 4px 4px 0px 0px black;
+  transition: all 0.1s;
+}
+
+.btn-pixel:active {
+  transform: translate(4px, 4px);
+  box-shadow: 0px 0px 0px 0px black;
+}
+
+.pixel-input {
+  background: white;
+  color: black;
+  border: 4px solid black;
+  font-family: var(--font-family-sans);
+}
+
+/* FPS cursor crosshair */
+.fps-crosshair {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fps-crosshair::before,
+.fps-crosshair::after {
+  content: '';
+  position: absolute;
+  background: var(--theme-accent, #f8d820);
+}
+.fps-crosshair::before {
+  width: 20px;
+  height: 2px;
+}
+.fps-crosshair::after {
+  width: 2px;
+  height: 20px;
+}
+
+/* FPS Lock Screen overlay */
+.fps-locked-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 998;
+  cursor: pointer;
+}
+
+/* ══════════════════════════════════════════
+   GAME-STYLE DECORATIONS
+══════════════════════════════════════════ */
+
+/* ── CRT Scanline overlay ── */
+.scanlines {
+  position: fixed;
+  inset: 0;
+  z-index: 9;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 3px,
+    rgba(0, 0, 0, 0.08) 3px,
+    rgba(0, 0, 0, 0.08) 4px
+  );
+  pointer-events: none;
+}
+
+/* ── Corner pixel bracket decorations ── */
+.corner-bracket {
+  position: fixed;
+  z-index: 10;
+  width: 32px;
+  height: 32px;
+  pointer-events: none;
+}
+
+.corner-tl {
+  top: 8px; left: 8px;
+  border-top: 4px solid var(--theme-accent, #f8d820);
+  border-left: 4px solid var(--theme-accent, #f8d820);
+  box-shadow: inset 4px 4px 0 0 rgba(0,0,0,0.5);
+}
+.corner-tr {
+  top: 8px; right: 8px;
+  border-top: 4px solid var(--theme-accent, #f8d820);
+  border-right: 4px solid var(--theme-accent, #f8d820);
+  box-shadow: inset -4px 4px 0 0 rgba(0,0,0,0.5);
+}
+.corner-bl {
+  bottom: 8px; left: 8px;
+  border-bottom: 4px solid var(--theme-accent, #f8d820);
+  border-left: 4px solid var(--theme-accent, #f8d820);
+  box-shadow: inset 4px -4px 0 0 rgba(0,0,0,0.5);
+}
+.corner-br {
+  bottom: 8px; right: 8px;
+  border-bottom: 4px solid var(--theme-accent, #f8d820);
+  border-right: 4px solid var(--theme-accent, #f8d820);
+  box-shadow: inset -4px -4px 0 0 rgba(0,0,0,0.5);
+}
+
+/* ── Coin bounce animation ── */
+@keyframes coin-bounce {
+  0%, 100% { transform: translateY(0px) scaleX(1); }
+  30%       { transform: translateY(-6px) scaleX(1); }
+  50%       { transform: translateY(-8px) scaleX(0.6); }
+  70%       { transform: translateY(-6px) scaleX(1); }
+}
+
+.game-coin {
+  display: inline-flex;
+  align-items: center;
+  animation: coin-bounce 1.2s ease-in-out infinite;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 0 4px #f8d820aa);
+}
+
+/* ── Blinking pixel star ── */
+@keyframes pixel-blink {
+  0%, 100% { opacity: 1;   transform: scale(1); }
+  40%       { opacity: 0.1; transform: scale(0.7); }
+  60%       { opacity: 1;   transform: scale(1.2); }
+}
+
+.pixel-star {
+  color: var(--theme-accent, #f8d820);
+  font-size: 14px;
+  animation: pixel-blink 2s ease-in-out infinite;
+  text-shadow: 0 0 6px var(--theme-accent, #f8d820);
+  line-height: 1;
+}
+
+/* ── Score / coin count label ── */
+.game-score-label {
+  font-family: var(--font-family-sans);
+  font-size: 10px;
+  color: var(--theme-accent, #f8d820);
+  text-shadow: 2px 2px 0 #000;
+  letter-spacing: 2px;
+}
+
+/* ── Bottom-center watermark ── */
+@keyframes watermark-pulse {
+  0%, 100% { opacity: 0.25; letter-spacing: 4px; }
+  50%       { opacity: 0.45; letter-spacing: 6px; }
+}
+
+.game-watermark {
+  font-family: var(--font-family-sans);
+  font-size: 9px;
+  color: var(--theme-accent, #f8d820);
+  text-shadow: 2px 2px 0 #000;
+  animation: watermark-pulse 3s ease-in-out infinite;
+  white-space: nowrap;
+}
